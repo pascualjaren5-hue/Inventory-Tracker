@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Inventory Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">SCHOOL PROPERTY MANAGEMENT</p>
+      <h1>SCHOOL INVENTORY TRACKER</h1>
+    </div>
+    <button id="exportPdfTop" class="button button-light" type="button">
+      Download PDF Report
+    </button>
+  </header>
+
+  <main class="container">
+    <section class="stats-grid">
+      <article class="stat-card">
+        <span>Total Records</span>
+        <strong id="totalRecords">0</strong>
+      </article>
+      <article class="stat-card">
+        <span>Total Quantity</span>
+        <strong id="totalQuantity">0</strong>
+      </article>
+      <article class="stat-card">
+        <span>Available</span>
+        <strong id="availableCount">0</strong>
+      </article>
+      <article class="stat-card">
+        <span>Needs Attention</span>
+        <strong id="attentionCount">0</strong>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">INVENTORY MANAGEMENT</p>
+          <h2 id="formTitle">Add School Equipment</h2>
+        </div>
+        <span class="pill">School Equipment</span>
+      </div>
+
+      <form id="equipmentForm">
+        <input type="hidden" id="editId">
+
+        <div class="form-grid">
+          <label>Equipment Name
+            <input id="equipmentName" type="text"
+              placeholder="e.g., Chair, Table, Fan" required>
+          </label>
+
+          <label>Quantity
+            <input id="quantity" type="number" min="1" step="1"
+              placeholder="Enter quantity" required>
+          </label>
+
+          <label>Condition
+            <select id="condition" required>
+              <option value="">Select condition</option>
+              <option>Good</option>
+              <option>Fair</option>
+              <option>Damaged</option>
+              <option>For Repair</option>
+              <option>Beyond Repair</option>
+            </select>
+          </label>
+
+          <label>Status
+            <select id="status" required>
+              <option value="">Select status</option>
+              <option>Available</option>
+              <option>In Use</option>
+              <option>Borrowed</option>
+              <option>Under Repair</option>
+              <option>Missing</option>
+              <option>Condemned</option>
+              <option>Disposed</option>
+            </select>
+          </label>
+
+          <label class="full-width">Location
+            <input id="location" type="text"
+              placeholder="e.g., Grade 12 Room" required>
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button class="button button-primary" id="saveButton" type="submit">
+            Save Equipment
+          </button>
+          <button class="button button-muted" id="cancelEdit"
+            type="button" hidden>Cancel Edit</button>
+          <button class="button button-muted" id="clearForm"
+            type="button">Clear Form</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading inventory-heading">
+        <div>
+          <p class="eyebrow">SAVED RECORDS</p>
+          <h2>School Equipment Inventory</h2>
+        </div>
+        <button id="exportPdf" class="button button-primary" type="button">
+          Download PDF Report
+        </button>
+      </div>
+
+      <div class="toolbar">
+        <input id="searchInput" type="search"
+          placeholder="Search equipment, condition, status, or location...">
+
+        <select id="statusFilter">
+          <option value="">All statuses</option>
+          <option>Available</option>
+          <option>In Use</option>
+          <option>Borrowed</option>
+          <option>Under Repair</option>
+          <option>Missing</option>
+          <option>Condemned</option>
+          <option>Disposed</option>
+        </select>
+
+        <select id="sortBy">
+          <option value="name">Sort: Equipment name</option>
+          <option value="quantity">Sort: Quantity</option>
+          <option value="location">Sort: Location</option>
+          <option value="status">Sort: Status</option>
+        </select>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Equipment Name</th>
+              <th>Quantity</th>
+              <th>Location</th>
+              <th>Condition</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryBody"></tbody>
+        </table>
+        <div id="emptyState" class="empty-state">
+          No equipment records yet. Add your first record above.
+        </div>
+      </div>
+
+      <p class="privacy-note">
+        Records are saved in this browser on this device using LocalStorage.
+      </p>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <footer>School Inventory Tracker • School Equipment Records</footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
